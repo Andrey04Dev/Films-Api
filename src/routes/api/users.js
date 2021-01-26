@@ -2,6 +2,8 @@ import e, { Router } from 'express'
 import bcrypt from 'bcryptjs'
 import { tableUsers } from '../../db/db'
 import { check, validationResult } from 'express-validator'
+import moment from 'moment'
+import jwt from 'jwt-simple'
 
 const router =  Router()
 const checkArray =[
@@ -19,4 +21,27 @@ router.post('/register', checkArray, async(req,res)=>{
     res.json(user)
 })
 
+router.post('/login', async(req,res)=>{
+    const user =  await tableUsers.findOne({where: {email:req.body.email}})
+    if (user) {
+        const match =  bcrypt.compareSync(req.body.password, user.password)
+        if (match) {
+            res.json({sucess : createToken(user)})
+        } else {
+            res.json({error:'There are mistake with el user o password'})
+        }
+    } else {
+        res.json({error:'There are mistake with el user o password'})
+    }
+})
+
+const createToken = (user)=>{
+    const payload = {
+        userId: user.id,
+        createdAt: moment().unix(),
+        expiredAt: moment().add(5,'minutes').unix()
+    }
+
+    return jwt.encode(payload,'frase secreta')
+}
 export default router
