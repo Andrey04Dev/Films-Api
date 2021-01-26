@@ -6,9 +6,9 @@ Es una api de películas con un login de usuario en la cual puede correr solo lo
 
 #### Tecnologías que utilice fueron: 
 
-*Nodejs
-*Express
-*Sequelize
-*Mysql2
-*bcryptjs
-*jwt-simple
+* Nodejs
+* Express
+* Sequelize
+* Mysql2
+* bcryptjs
+* jwt-simple
